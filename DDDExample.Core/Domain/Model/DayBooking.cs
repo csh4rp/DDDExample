@@ -20,7 +20,7 @@ namespace DDDExample.Core.Domain.Model
             LocationId = locationId;
         }
 
-        public void AddBooking(DateRange dateRange, IEnumerable<int> userIds)
+        public Booking AddBooking(DateRange dateRange, IEnumerable<int> userIds)
         {
             var booking = new Booking(Id, dateRange, userIds);
             foreach (var rule in GetValidationRules())
@@ -34,6 +34,7 @@ namespace DDDExample.Core.Domain.Model
             
             RegisterDomainEvent(new BookingCreated(dateRange, userIds));
             _bookings.Add(booking);
+            return booking;
         }
 
         public void CancelBooking(int bookingId)

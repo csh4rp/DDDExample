@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDDExample.Core", "DDDExample.Core\DDDExample.Core.csproj", "{A04FEF21-E36A-4072-B38A-CADDB0C3E25D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDDExample.Web", "DDDExample.Web\DDDExample.Web.csproj", "{4E781907-C9D4-486B-8074-CED46F7FF7F1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{A04FEF21-E36A-4072-B38A-CADDB0C3E25D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A04FEF21-E36A-4072-B38A-CADDB0C3E25D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A04FEF21-E36A-4072-B38A-CADDB0C3E25D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E781907-C9D4-486B-8074-CED46F7FF7F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E781907-C9D4-486B-8074-CED46F7FF7F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E781907-C9D4-486B-8074-CED46F7FF7F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E781907-C9D4-486B-8074-CED46F7FF7F1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
