@@ -4,6 +4,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDDExample.Core", "DDDExamp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDDExample.Web", "DDDExample.Web\DDDExample.Web.csproj", "{4E781907-C9D4-486B-8074-CED46F7FF7F1}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Requests", "Requests", "{54438BCD-BA64-4E48-B829-65EF35A9388A}"
+ProjectSection(SolutionItems) = preProject
+	requests.rest = requests.rest
+EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

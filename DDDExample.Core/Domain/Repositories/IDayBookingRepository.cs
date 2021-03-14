@@ -7,6 +7,7 @@ namespace DDDExample.Core.Domain.Repositories
     {
         void Add(DayBooking dayBooking);
         void Update(DayBooking dayBooking);
-        DayBooking GetForDayAndLocation(DateTime dateTime, int locationId);
+        DayBooking GetForDayAndLocation(DateTime dateTime, Guid locationId);
+        DayBooking GetByBookingId(Guid bookingId);
     }
 }

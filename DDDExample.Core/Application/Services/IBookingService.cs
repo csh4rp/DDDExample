@@ -6,8 +6,7 @@ namespace DDDExample.Core.Application.Services
 {
     public interface IBookingService
     {
-        int Add(BookingDTO booking);
-        void Cancel(DateTime date, int locationId, int bookingId);
-        List<BookingDTO> GetAll(DateTime date, int locationId);
+        Guid Add(BookingDTO booking);
+        void Cancel(Guid bookingId);
     }
 }

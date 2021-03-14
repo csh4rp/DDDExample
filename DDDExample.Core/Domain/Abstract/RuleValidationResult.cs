@@ -8,7 +8,7 @@ namespace DDDExample.Core.Domain.Abstract
         private readonly List<string> _errors = new();
         public static readonly RuleValidationResult Valid = new();
         
-        public bool IsValid => _errors.Any();
+        public bool IsValid => !_errors.Any();
 
         public IReadOnlyList<string> Errors =>  _errors.AsReadOnly();
 

@@ -21,22 +21,22 @@ namespace DDDExample.Core.Domain.Model
         
         public bool Overlaps(DateRange dateRange)
         {
-            if (dateRange.StartDate < StartDate && dateRange.EndDate > StartDate)
+            if (dateRange.StartDate <= StartDate && dateRange.EndDate >= StartDate)
             {
                 return true;
             }
 
-            if (dateRange.StartDate < StartDate && dateRange.EndDate > EndDate)
+            if (dateRange.StartDate <= StartDate && dateRange.EndDate >= EndDate)
             {
                 return true;
             }
 
-            if (dateRange.StartDate > StartDate && dateRange.StartDate < EndDate && dateRange.EndDate < EndDate)
+            if (dateRange.StartDate >= StartDate && dateRange.StartDate <= EndDate && dateRange.EndDate <= EndDate)
             {
                 return false;
             }
 
-            if (dateRange.StartDate > StartDate && dateRange.StartDate < EndDate && dateRange.EndDate > EndDate)
+            if (dateRange.StartDate >= StartDate && dateRange.StartDate <= EndDate && dateRange.EndDate >= EndDate)
             {
                 return false;
             }

@@ -1,0 +1,57 @@
+@firstUserId = 00000000-0000-0000-0000-000000000001
+@secondUserId = 00000000-0000-0000-0000-000000000002
+@thirdUserId = 00000000-0000-0000-0000-000000000003
+@fourthUserId = 00000000-0000-0000-0000-000000000004
+@locationId = 00000000-0000-0000-0000-000000000001
+
+@contentType = application/json
+
+###
+
+# @name createBooking
+POST https://localhost:5001/bookings
+Content-Type: {{contentType}}
+
+{
+  "StartDate": "2021-03-15T15:00:00",
+  "LocationId": "{{locationId}}",
+  "UserIds": [
+    "{{firstUserId}}",
+    "{{secondUserId}}"
+  ]
+}
+
+###
+
+@bookingId = {{createBooking.response.body.$.id}}
+
+GET https://localhost:5001/bookings/{{bookingId}}
+Content-Type: {{contentType}}
+
+###
+
+
+POST https://localhost:5001/bookings
+Content-Type: {{contentType}}
+
+{
+  "StartDate": "2021-03-15T15:00:00",
+  "LocationId": "{{locationId}}",
+  "UserIds": [
+    "{{thirdUserId}}",
+    "{{fourthUserId}}"
+  ]
+}
+
+###
+
+DELETE  https://localhost:5001/bookings/{{bookingId}}
+Content-Type: {{contentType}}
+
+###
+
+
+GET  https://localhost:5001/bookings
+Content-Type: {{contentType}}
+
+###

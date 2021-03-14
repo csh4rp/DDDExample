@@ -17,7 +17,7 @@ namespace DDDExample.Core.Domain.Model.Rules
         {
             foreach (var userId in entity.UserIds)
             {
-                if (_dayBookings.Any(booking => booking.IncludesUserWithId(userId)))
+                if (_dayBookings.Any(booking => !booking.CancelledAt.HasValue && booking.IncludesUserWithId(userId)))
                 {
                     return RuleValidationResult.Invalid($"User with ID: \"{userId}\" already has booking in that day.");
                 }

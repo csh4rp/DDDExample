@@ -4,14 +4,14 @@ namespace DDDExample.Core.Domain.Model
 {
     public class BookingUser
     {
-        public int BookingId { get; private set; }
-        public int UserId { get; private set; }
+        public Guid BookingId { get; private set; }
+        public Guid UserId { get; private set; }
 
         private BookingUser()
         {
         }
         
-        public BookingUser(int bookingId, int userId)
+        public BookingUser(Guid bookingId, Guid userId)
         {
             BookingId = bookingId;
             UserId = userId;

@@ -8,19 +8,22 @@ using DDDExample.Core.Domain.Model.Rules;
 
 namespace DDDExample.Core.Domain.Model
 {
-    public class DayBooking : AggregateRoot<int>
+    public class DayBooking : AggregateRoot<Guid>
     {
         private List<Booking> _bookings = new();
         public DateTime Date { get; private set; }
-        public int LocationId { get; private set; }
+        public Guid LocationId { get; private set; }
 
-        public DayBooking(DateTime date, int locationId)
+        public IEnumerable<Booking> Bookings => _bookings;
+
+        public DayBooking(DateTime date, Guid locationId)
         {
+            Id = Guid.NewGuid();
             Date = date.Date;
             LocationId = locationId;
         }
 
-        public Booking AddBooking(DateRange dateRange, IEnumerable<int> userIds)
+        public Booking AddBooking(DateRange dateRange, IEnumerable<Guid> userIds)
         {
             var booking = new Booking(Id, dateRange, userIds);
             foreach (var rule in GetValidationRules())
@@ -32,12 +35,12 @@ namespace DDDExample.Core.Domain.Model
                 }
             }
             
-            RegisterDomainEvent(new BookingCreated(dateRange, userIds));
+            RegisterDomainEvent(new BookingCreated(booking.Id, LocationId, dateRange, userIds));
             _bookings.Add(booking);
             return booking;
         }
 
-        public void CancelBooking(int bookingId)
+        public void CancelBooking(Guid bookingId)
         {
             var bookingToCancel = _bookings.FirstOrDefault(booking => booking.Id == bookingId);
             if (bookingToCancel is null)

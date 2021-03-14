@@ -1,30 +1,49 @@
 using System.Collections.Generic;
 using System.Linq;
 using DDDExample.Core.Domain.Abstract;
+using DDDExample.Core.Infrastructure.Events;
 
 namespace DDDExample.Core.Infrastructure.Repositories
 {
-    internal sealed class InMemoryRepository<TEntity, TKey> : IRepository<TEntity, TKey> where TEntity : Entity<TKey>
+    internal sealed class InMemoryRepository<TEntity, TKey> : IRepository<TEntity, TKey> where TEntity : AggregateRoot<TKey>
     {
-        private readonly Dictionary<TKey, TEntity> _entities = new();
+        private static readonly Dictionary<TKey, TEntity> Entities = new();
+        private readonly IEventPublisher _eventPublisher;
 
-        public IQueryable<TEntity> Entities => _entities.Values.AsQueryable();
+        public InMemoryRepository(IEventPublisher eventPublisher)
+        {
+            _eventPublisher = eventPublisher;
+        }
+
+        public IQueryable<TEntity> Queryable => Entities.Values.AsQueryable();
 
         public void Add(TEntity entity)
         {
-            _entities.Add(entity.Id, entity);
+            Entities.Add(entity.Id, entity);
+            PublishEvents(entity);
         }
 
         public void Update(TEntity entity)
         {
-            _entities[entity.Id] = entity;
+            Entities[entity.Id] = entity;
+            PublishEvents(entity);
         }
 
         public void Delete(TEntity entity)
         {
-            _entities.Remove(entity.Id);
+            Entities.Remove(entity.Id);
         }
 
-        public TEntity GetById(TKey id) => _entities[id];
+        public TEntity GetById(TKey id) => Entities.TryGetValue(id, out var entity) ? entity : null;
+
+        private void PublishEvents(TEntity entity)
+        {
+            foreach (var domainEvent in entity.DomainEvents)
+            {
+                _eventPublisher.Publish(domainEvent);
+            }
+            
+            entity.ClearEvents();
+        }
     }
 }

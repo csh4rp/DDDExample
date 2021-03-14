@@ -6,23 +6,24 @@ using DDDExample.Core.Domain.Model.Exceptions;
 
 namespace DDDExample.Core.Domain.Model
 {
-    public class Booking : Entity<int>
+    public class Booking : Entity<Guid>
     {
         private List<BookingUser> _users = new();
         
-        public int DayBookingId { get; private set; }
+        public Guid DayBookingId { get; private set; }
         public DateTime StartsAt { get; private set; }
         public DateTime EndsAt { get; private set; }
         public DateTime? CancelledAt { get; private set; }
         internal DateRange DateRange => new(StartsAt, EndsAt);
-        internal IEnumerable<int> UserIds => _users.Select(user => user.UserId);
+        internal IEnumerable<Guid> UserIds => _users.Select(user => user.UserId);
 
         private Booking()
         {
         }
 
-        public Booking(int dayBookingId, DateRange dateRange, IEnumerable<int> userIds)
+        public Booking(Guid dayBookingId, DateRange dateRange, IEnumerable<Guid> userIds)
         {
+            Id = Guid.NewGuid();
             DayBookingId = dayBookingId;
             StartsAt = dateRange.StartDate;
             EndsAt = dateRange.EndDate;
@@ -33,7 +34,7 @@ namespace DDDExample.Core.Domain.Model
 
         public bool IsOverlappingWith(DateRange dateRange) => DateRange.Overlaps(dateRange);
 
-        public bool IncludesUserWithId(int userId) => _users.Any(user => user.UserId == userId);
+        public bool IncludesUserWithId(Guid userId) => _users.Any(user => user.UserId == userId);
 
         public void Cancel() => CancelledAt = DateTime.UtcNow;
 

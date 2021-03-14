@@ -11,8 +11,14 @@ namespace DDDExample.Core.Application.Services
     {
         private readonly IDayBookingRepository _dayBookingRepository;
         private readonly IBookingSettingService _bookingSettingService;
-        
-        public int Add(BookingDTO booking)
+
+        public BookingService(IDayBookingRepository dayBookingRepository, IBookingSettingService bookingSettingService)
+        {
+            _dayBookingRepository = dayBookingRepository;
+            _bookingSettingService = bookingSettingService;
+        }
+
+        public Guid Add(BookingDTO booking)
         {
             var dayBooking = _dayBookingRepository.GetForDayAndLocation(booking.StartDate.Date, booking.LocationId) ??
                              new DayBooking(booking.StartDate.Date, booking.LocationId);
@@ -33,13 +39,11 @@ namespace DDDExample.Core.Application.Services
             return dbBooking.Id;
         }
 
-        public void Cancel(DateTime date, int locationId, int bookingId)
+        public void Cancel(Guid bookingId)
         {
-            var dayBooking = _dayBookingRepository.GetForDayAndLocation(date, locationId);
+            var dayBooking = _dayBookingRepository.GetByBookingId(bookingId);
             dayBooking.CancelBooking(bookingId);
             _dayBookingRepository.Update(dayBooking);
         }
-
-        public List<BookingDTO> GetAll(DateTime date, int locationId) => throw new NotImplementedException();
     }
 }

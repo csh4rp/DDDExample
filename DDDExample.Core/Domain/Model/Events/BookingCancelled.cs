@@ -5,8 +5,8 @@ namespace DDDExample.Core.Domain.Model.Events
 {
     public class BookingCancelled : DomainEvent
     {
-        public int BookingId { get; private set; }
+        public Guid BookingId { get; private set; }
 
-        public BookingCancelled(int bookingId) => BookingId = bookingId;
+        public BookingCancelled(Guid bookingId) => BookingId = bookingId;
     }
 }
