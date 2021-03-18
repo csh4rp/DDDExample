@@ -4,6 +4,16 @@ namespace DDDExample.Core.Domain.Abstract
     {
         public TKey Id { get; protected set; }
 
-        public bool IsTransient => Id is null || Id.Equals(default);
+        public bool IsTransient { get; internal set; }
+
+        protected Entity()
+        {
+        }
+
+        protected Entity(TKey id)
+        {
+            Id = id;
+            IsTransient = true;
+        }
     }
 }

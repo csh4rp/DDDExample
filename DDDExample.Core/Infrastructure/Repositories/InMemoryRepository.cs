@@ -21,6 +21,7 @@ namespace DDDExample.Core.Infrastructure.Repositories
         {
             Entities.Add(entity.Id, entity);
             PublishEvents(entity);
+            entity.IsTransient = false;
         }
 
         public void Update(TEntity entity)

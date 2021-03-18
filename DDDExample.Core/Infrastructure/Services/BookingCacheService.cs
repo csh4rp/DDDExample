@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using DDDExample.Core.Application.DTO;
 using DDDExample.Core.Application.Services;
 
@@ -12,7 +11,7 @@ namespace DDDExample.Core.Infrastructure.Services
         
         public void Add(BookingDTO booking)
         {
-            Bookings.Add(booking.Id, booking);
+            Bookings[booking.Id] = booking;
         }
 
         public void Remove(Guid id)

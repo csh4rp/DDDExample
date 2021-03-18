@@ -8,5 +8,6 @@ namespace DDDExample.Core.Application.Services
     {
         Guid Add(BookingDTO booking);
         void Cancel(Guid bookingId);
+        void Reschedule(BookingRescheduleDTO booking);
     }
 }

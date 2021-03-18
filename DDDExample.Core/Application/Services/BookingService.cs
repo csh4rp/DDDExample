@@ -45,5 +45,41 @@ namespace DDDExample.Core.Application.Services
             dayBooking.CancelBooking(bookingId);
             _dayBookingRepository.Update(dayBooking);
         }
+
+        public void Reschedule(BookingRescheduleDTO booking)
+        {
+            var currentDayBooking = _dayBookingRepository.GetByBookingId(booking.Id) ?? new DayBooking(booking.StartDate, booking.LocationId);
+            var bookingTime = _bookingSettingService.GetBookingTime();
+            var dateRange = new DateRange(booking.StartDate, booking.StartDate.Add(bookingTime));
+            if (currentDayBooking.Date != booking.StartDate.Date || currentDayBooking.LocationId != booking.LocationId)
+            {
+                var rescheduledDayBooking = _dayBookingRepository.GetForDayAndLocation(booking.StartDate, booking.LocationId) ?? new DayBooking(booking.StartDate, booking.LocationId);
+                var oldBooking = rescheduledDayBooking.GetBooking(booking.Id);
+                rescheduledDayBooking.CancelBooking(booking.Id);
+                currentDayBooking.AddBooking(dateRange, oldBooking.UserIds);
+
+                if (rescheduledDayBooking.IsTransient)
+                {
+                    _dayBookingRepository.Add(rescheduledDayBooking);
+                }
+                else
+                {
+                    _dayBookingRepository.Update(rescheduledDayBooking);
+                }
+            }
+            else
+            {
+                currentDayBooking.Reschedule(booking.Id, dateRange);
+            }
+
+            if (currentDayBooking.IsTransient)
+            {
+                _dayBookingRepository.Add(currentDayBooking);
+            }
+            else
+            {
+                _dayBookingRepository.Update(currentDayBooking);
+            }
+        }
     }
 }

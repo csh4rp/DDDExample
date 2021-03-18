@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace DDDExample.Core.Domain.Abstract
@@ -10,9 +11,18 @@ namespace DDDExample.Core.Domain.Abstract
 
         public IReadOnlyList<DomainEvent> DomainEvents => _domainEvents;
 
-        public void RegisterDomainEvent(DomainEvent domainEvent)
+        protected AggregateRoot()
+        {
+        }
+
+        protected AggregateRoot(TKey id) : base(id)
+        {
+        }
+        
+        protected void RegisterDomainEvent(DomainEvent domainEvent)
         {
             _domainEvents.Add(domainEvent);
+            Version++;
         }
         
         public void ClearEvents() => _domainEvents.Clear();

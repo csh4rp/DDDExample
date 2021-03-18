@@ -16,9 +16,8 @@ namespace DDDExample.Core.Domain.Model
 
         public IEnumerable<Booking> Bookings => _bookings;
 
-        public DayBooking(DateTime date, Guid locationId)
+        public DayBooking(DateTime date, Guid locationId) : base(Guid.NewGuid())
         {
-            Id = Guid.NewGuid();
             Date = date.Date;
             LocationId = locationId;
         }
@@ -26,7 +25,7 @@ namespace DDDExample.Core.Domain.Model
         public Booking AddBooking(DateRange dateRange, IEnumerable<Guid> userIds)
         {
             var booking = new Booking(Id, dateRange, userIds);
-            foreach (var rule in GetValidationRules())
+            foreach (var rule in GetCreationValidationRules())
             {
                 var validationResult = rule.Validate(booking);
                 if (!validationResult.IsValid)
@@ -38,6 +37,12 @@ namespace DDDExample.Core.Domain.Model
             RegisterDomainEvent(new BookingCreated(booking.Id, LocationId, dateRange, userIds));
             _bookings.Add(booking);
             return booking;
+        }
+        
+        private IEnumerable<IBusinessRule<Booking>> GetCreationValidationRules()
+        {
+            yield return new BookingOverlappingRule(_bookings);
+            yield return new SingleBookingPerDayRule(_bookings);
         }
 
         public void CancelBooking(Guid bookingId)
@@ -52,10 +57,32 @@ namespace DDDExample.Core.Domain.Model
             bookingToCancel.Cancel();
         }
 
-        private IEnumerable<IBusinessRule<Booking>> GetValidationRules()
+        public void Reschedule(Guid bookingId, DateRange dateRange)
         {
-            yield return new BookingOverlappingRule(_bookings);
-            yield return new SingleBookingPerDayRule(_bookings);
+            var booking = GetBooking(bookingId);
+            if (booking.DateRange == dateRange)
+            {
+                return;
+            }
+            
+            booking.ChangeDate(dateRange);
+            foreach (var rule in GetCreationValidationRules())
+            {
+                var validationResult = rule.Validate(booking);
+                if (!validationResult.IsValid)
+                {
+                    throw new BookingValidationException(validationResult.Errors);
+                }
+            }
+            
+            RegisterDomainEvent(new BookingRescheduled(booking.Id, LocationId, dateRange,
+                booking.UserIds));
         }
+
+
+
+        public Booking GetBooking(Guid id) => _bookings.First(booking => booking.Id == id);
+
+
     }
 }

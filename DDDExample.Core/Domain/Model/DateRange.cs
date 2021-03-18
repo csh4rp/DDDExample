@@ -21,7 +21,7 @@ namespace DDDExample.Core.Domain.Model
         
         public bool Overlaps(DateRange dateRange)
         {
-            if (dateRange.StartDate <= StartDate && dateRange.EndDate >= StartDate)
+            if (dateRange.StartDate <= StartDate && dateRange.EndDate > StartDate)
             {
                 return true;
             }
@@ -36,7 +36,7 @@ namespace DDDExample.Core.Domain.Model
                 return false;
             }
 
-            if (dateRange.StartDate >= StartDate && dateRange.StartDate <= EndDate && dateRange.EndDate >= EndDate)
+            if (dateRange.StartDate >= StartDate && dateRange.StartDate < EndDate && dateRange.EndDate >= EndDate)
             {
                 return false;
             }

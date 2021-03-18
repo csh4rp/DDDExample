@@ -4,14 +4,14 @@ using DDDExample.Core.Domain.Abstract;
 
 namespace DDDExample.Core.Domain.Model.Events
 {
-    public class BookingCreated : DomainEvent
+    public class BookingRescheduled : DomainEvent
     {
         public Guid BookingId { get; private set; }
         public Guid LocationId { get; private set; }
         public DateRange DateRange { get; private set; }
         public IEnumerable<Guid> UserIds { get; private set; }
 
-        public BookingCreated(Guid bookingId, Guid locationId, DateRange dateRange, IEnumerable<Guid> userIds)
+        public BookingRescheduled(Guid bookingId, Guid locationId, DateRange dateRange, IEnumerable<Guid> userIds)
         {
             BookingId = bookingId;
             LocationId = locationId;

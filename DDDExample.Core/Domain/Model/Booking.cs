@@ -16,14 +16,10 @@ namespace DDDExample.Core.Domain.Model
         public DateTime? CancelledAt { get; private set; }
         internal DateRange DateRange => new(StartsAt, EndsAt);
         internal IEnumerable<Guid> UserIds => _users.Select(user => user.UserId);
+        
 
-        private Booking()
+        public Booking(Guid dayBookingId, DateRange dateRange, IEnumerable<Guid> userIds) : base(Guid.NewGuid())
         {
-        }
-
-        public Booking(Guid dayBookingId, DateRange dateRange, IEnumerable<Guid> userIds)
-        {
-            Id = Guid.NewGuid();
             DayBookingId = dayBookingId;
             StartsAt = dateRange.StartDate;
             EndsAt = dateRange.EndDate;
@@ -37,6 +33,12 @@ namespace DDDExample.Core.Domain.Model
         public bool IncludesUserWithId(Guid userId) => _users.Any(user => user.UserId == userId);
 
         public void Cancel() => CancelledAt = DateTime.UtcNow;
+
+        public void ChangeDate(DateRange dateRange)
+        {
+            StartsAt = dateRange.StartDate;
+            EndsAt = dateRange.EndDate;
+        }
 
     }
 }

@@ -11,7 +11,9 @@ namespace DDDExample.Core.Domain.Model.Rules
         public BookingOverlappingRule(IEnumerable<Booking> bookings) => _dayBookings = bookings;
 
         public RuleValidationResult Validate(Booking entity) => 
-            _dayBookings.Any(booking => !booking.CancelledAt.HasValue && booking.IsOverlappingWith(entity.DateRange))
+            _dayBookings.Any(booking => booking.Id != entity.Id 
+                                        && !booking.CancelledAt.HasValue 
+                                        && booking.IsOverlappingWith(entity.DateRange))
                 ? RuleValidationResult.Invalid("Booking overlaps with another booking.")
                 : RuleValidationResult.Valid;
         
