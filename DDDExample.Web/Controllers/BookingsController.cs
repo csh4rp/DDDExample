@@ -35,7 +35,7 @@ namespace DDDExample.Web.Controllers
             }
         }
         
-        [HttpPut("reschedule/{bookingId}")]
+        [HttpPut("{bookingId}/reschedule")]
         public IActionResult Reschedule(Guid bookingId, RescheduleRequest request)
         {
             var dto = new BookingRescheduleDTO(bookingId, request.LocationId, request.StartDate);

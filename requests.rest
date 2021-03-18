@@ -60,7 +60,7 @@ Content-Type: {{contentType}}
 
 @bookingId = {{createBooking.response.body.$.id}}
 
-PUT https://localhost:5001/bookings/reschedule/{{bookingId}}
+PUT https://localhost:5001/bookings/{{bookingId}}/reschedule
 Content-Type: {{contentType}}
 
 {
